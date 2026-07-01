@@ -8,7 +8,7 @@
    0) CONFIGURACIÓN
    ------------------------------------------------------------ */
 // Cambia esto por el dominio real del backend en producción.
-const API_BASE = "https://batmanuncrack.pythonanywhere.com";
+const API_BASE = "https://Batman07.pythonanywhere.com";
 
 // Debe ser EXACTAMENTE el mismo Client ID que GOOGLE_CLIENT_ID en el .env
 // del backend (server.py lo valida).
