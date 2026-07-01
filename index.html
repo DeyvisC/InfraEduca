@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>InfraEduca · Reporta y mejora tu escuela</title>
+<meta name="description" content="App ciudadana para reportar problemas de infraestructura escolar." />
+<link rel="stylesheet" href="styles.css" />
+<!-- Google Identity Services -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+<div class="app-container" id="app">
+
+  <!-- ============================================================ -->
+  <!-- TOASTS -->
+  <!-- ============================================================ -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- ============================================================ -->
+  <!-- PANTALLA: LOGIN -->
+  <!-- ============================================================ -->
+  <section id="screen-login" class="screen active">
+    <div class="login-hero">
+      <div class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 64 56" class="logo-svg">
+          <path d="M32 4 L58 22 H6 Z" fill="#8B5E34"/>
+          <rect x="10" y="20" width="44" height="30" rx="4" fill="#EFE6DA"/>
+          <rect x="14" y="22" width="6" height="26" rx="2" fill="#E2574C"/>
+          <rect x="22" y="22" width="6" height="26" rx="2" fill="#F2924A"/>
+          <rect x="30" y="22" width="6" height="26" rx="2" fill="#F2C84A"/>
+          <rect x="38" y="22" width="6" height="26" rx="2" fill="#3E9C6E"/>
+          <rect x="46" y="22" width="6" height="26" rx="2" fill="#3D7FBF"/>
+        </svg>
+      </div>
+      <h1 class="logo-word">InfraEduca</h1>
+      <p class="login-tagline">Reporta. Valida. Mejora tu escuela.</p>
+    </div>
+
+    <div class="login-card">
+      <p class="login-card-title">Ingresa con tu cuenta de Gmail para reportar y validar casos</p>
+
+      <!-- Botón real de Google Identity Services se monta aquí -->
+      <div id="google-signin-btn" class="google-btn-slot"></div>
+
+      <button id="btn-google-fallback" class="btn btn-primary btn-block" type="button" hidden>
+        Continuar con Google
+      </button>
+
+      <p class="login-disclaimer">
+        Al continuar aceptas que tu nombre y correo se asocien a los reportes
+        que publiques. Tu identidad nunca se muestra públicamente salvo en
+        "Mis Reportes".
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PANTALLA: INICIO -->
+  <!-- ============================================================ -->
+  <section id="screen-home" class="screen">
+    <div class="chrome-slot" data-screen="home"></div>
+
+    <div class="screen-scroll">
+      <div class="hero-box">
+        <h2>Realicemos algo por nuestras escuelas.</h2>
+      </div>
+
+      <div class="section-row">
+        <h3 class="section-title">Casos públicos recientes</h3>
+      </div>
+
+      <div id="home-categories" class="chip-row"></div>
+
+      <div id="home-reports-list" class="reports-list">
+        <!-- tarjetas inyectadas por app.js -->
+      </div>
+
+      <button id="home-load-more" class="btn btn-ghost btn-block" type="button" hidden>
+        Cargar más
+      </button>
+      <p id="home-empty" class="empty-state" hidden>Todavía no hay reportes públicos. ¡Sé el primero!</p>
+
+      <div class="news-section">
+        <div class="section-row">
+          <h3 class="section-title">Últimas Noticias</h3>
+          <span class="link-muted">Ver todos</span>
+        </div>
+        <div class="news-card">
+          <div class="news-thumb" aria-hidden="true"></div>
+          <p class="news-headline">Presentan proyecto para dotar de nueva infraestructura a colegios públicos.</p>
+        </div>
+      </div>
+
+      <div class="scroll-spacer"></div>
+    </div>
+
+    <button id="fab-new-report-home" class="fab-cta" type="button">Iniciar un nuevo reporte</button>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PANTALLA: INFORMACIÓN -->
+  <!-- ============================================================ -->
+  <section id="screen-info" class="screen">
+    <div class="chrome-slot" data-screen="info"></div>
+
+    <div class="screen-scroll">
+      <div class="hero-box hero-box-tight">
+        <h2>Guía de Participación Estudiantil.</h2>
+      </div>
+
+      <details class="accordion" open>
+        <summary><span class="accordion-icon">⚠️</span> ¿Qué es una infraestructura en riesgo? <span class="chev">⌃</span></summary>
+        <div class="accordion-body">
+          <div class="info-item">
+            <div class="info-icon-box"><svg viewBox="0 0 24 24" class="icon"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor"/></svg></div>
+            <div>
+              <p class="info-item-title">Riesgo Eléctrico</p>
+              <p class="info-item-sub">Cables expuestos, tomacorrientes rotos</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon-box"><svg viewBox="0 0 24 24" class="icon"><path d="M12 2C8 8 5 11.5 5 15a7 7 0 0 0 14 0c0-3.5-3-7-7-13z" fill="currentColor"/></svg></div>
+            <div>
+              <p class="info-item-title">Falta de Agua y Sanidad</p>
+              <p class="info-item-sub">Baños colapsados, falta de agua</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon-box"><svg viewBox="0 0 24 24" class="icon"><path d="M3 12 12 4l9 8h-3v8h-4v-6h-4v6H6v-8H3z" fill="currentColor"/></svg></div>
+            <div>
+              <p class="info-item-title">Peligro Estructural</p>
+              <p class="info-item-sub">Techos con goteras, grietas profundas</p>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="accordion">
+        <summary><span class="accordion-icon">🏛️</span> Conexión con el Gobierno: Identicole <span class="chev">⌄</span></summary>
+        <div class="accordion-body">
+          <p class="accordion-text">
+            Cada reporte recibe un código de seguimiento (Identicole) que puede
+            usarse para consultar el estado del caso ante las entidades
+            correspondientes. Lo encuentras en "Mis Reportes".
+          </p>
+        </div>
+      </details>
+
+      <details class="accordion">
+        <summary><span class="accordion-icon">🔒</span> Seguridad y Anonimato (FAQs) <span class="chev">⌄</span></summary>
+        <div class="accordion-body">
+          <p class="accordion-text">
+            Tu correo solo es visible para ti y para el equipo de InfraEduca.
+            Otros usuarios solo ven la categoría, descripción y foto del caso.
+          </p>
+        </div>
+      </details>
+
+      <div class="emergency-card">
+        <p class="emergency-title"><span class="accordion-icon">📞</span> Alerta Directa (Emergencias)</p>
+        <a class="emergency-row" href="tel:0800-15-170">
+          <div>
+            <p class="emergency-name">Defensoría del Pueblo</p>
+            <p class="emergency-number">0-800-15-170</p>
+          </div>
+          <span class="phone-btn"><svg viewBox="0 0 24 24" class="icon icon-white"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8z" fill="currentColor"/></svg></span>
+        </a>
+        <a class="emergency-row" href="tel:016155800">
+          <div>
+            <p class="emergency-name">MINEDU Central</p>
+            <p class="emergency-number">(01) 615-5800</p>
+          </div>
+          <span class="phone-btn"><svg viewBox="0 0 24 24" class="icon icon-white"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8z" fill="currentColor"/></svg></span>
+        </a>
+        <a class="emergency-row" href="tel:110">
+          <div>
+            <p class="emergency-name">Indeci Alerta</p>
+            <p class="emergency-number">110</p>
+          </div>
+          <span class="phone-btn"><svg viewBox="0 0 24 24" class="icon icon-white"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8z" fill="currentColor"/></svg></span>
+        </a>
+      </div>
+
+      <div class="scroll-spacer"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PANTALLA: MIS REPORTES -->
+  <!-- ============================================================ -->
+  <section id="screen-myreports" class="screen">
+    <div class="chrome-slot" data-screen="myreports"></div>
+
+    <div class="screen-scroll">
+      <div class="hero-box">
+        <h2>Mis Reportes Ciudadanos</h2>
+      </div>
+
+      <div class="section-row">
+        <h3 class="section-title">Estado de mis reportes</h3>
+        <span class="link-muted" id="my-view-all">Ver todos</span>
+      </div>
+
+      <div id="my-reports-list" class="reports-list reports-list-detailed">
+        <!-- tarjetas inyectadas por app.js -->
+      </div>
+
+      <button id="my-load-more" class="btn btn-ghost btn-block" type="button" hidden>
+        Cargar más
+      </button>
+      <p id="my-empty" class="empty-state" hidden>Aún no has creado ningún reporte.</p>
+
+      <div class="scroll-spacer"></div>
+    </div>
+
+    <button id="fab-new-report-mine" class="fab-cta" type="button">Iniciar un nuevo reporte</button>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PANTALLA: NUEVO REPORTE (wizard de 3 pasos) -->
+  <!-- ============================================================ -->
+  <section id="screen-report-form" class="screen">
+    <header class="wizard-header">
+      <button id="wizard-back" class="icon-btn-flat" type="button" aria-label="Volver">‹</button>
+      <div class="wizard-progress-wrap">
+        <p class="wizard-step-label" id="wizard-step-label">Paso 1 de 3</p>
+        <div class="wizard-progress-track">
+          <div class="wizard-progress-fill" id="wizard-progress-fill" style="width:33%"></div>
+        </div>
+      </div>
+    </header>
+
+    <form id="report-form" class="screen-scroll wizard-body" novalidate>
+
+      <!-- PASO 1: EL PROBLEMA -->
+      <div class="wizard-step" id="wizard-step-1" data-step="1">
+        <h2 class="wizard-title">Reportar Nuevo Caso – <br/>Paso 1: El Problema</h2>
+
+        <div id="category-grid" class="category-grid"></div>
+
+        <textarea id="description-input" class="description-input" maxlength="600"
+          placeholder="Cuéntanos qué sucede (brevemente)..." required></textarea>
+        <p class="char-counter"><span id="char-count">0</span>/600</p>
+
+        <input type="file" id="photo-input" accept="image/*,video/mp4,video/quicktime" capture="environment" hidden required />
+        <button type="button" id="btn-pick-photo" class="btn-camera">
+          <span class="btn-camera-icon"><svg viewBox="0 0 24 24" class="icon icon-white"><path d="M9 3 7.5 5H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3.5L15 3H9z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="13" r="3.6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span>
+          <span id="btn-pick-photo-label">Tomar Foto o Video</span>
+        </button>
+        <div id="photo-preview-wrap" class="photo-preview-wrap" hidden>
+          <img id="photo-preview" alt="Vista previa de la foto adjunta" />
+          <button type="button" id="btn-remove-photo" class="photo-remove-btn" aria-label="Quitar foto">✕</button>
+        </div>
+
+        <hr class="wizard-divider" />
+        <div class="wizard-actions">
+          <button type="button" class="btn-pill-next" id="step1-next">Enviar <span class="chev-right">›</span></button>
+        </div>
+      </div>
+
+      <!-- PASO 2: UBICACIÓN -->
+      <div class="wizard-step" id="wizard-step-2" data-step="2" hidden>
+        <h2 class="wizard-title">Reportar Nuevo Caso – <br/>Paso 2: La Ubicación</h2>
+
+        <label class="field-label" for="school-input">Institución Educativa</label>
+        <input type="text" id="school-input" class="field-input" maxlength="160"
+          placeholder="Ej. I.E. 20801 Jorge Chávez" required />
+
+        <label class="field-label" for="region-input">Distrito / Región</label>
+        <input type="text" id="region-input" class="field-input" maxlength="160"
+          placeholder="Ej. Seyán, Región Lima" required />
+
+        <hr class="wizard-divider" />
+        <div class="wizard-actions wizard-actions-split">
+          <button type="button" class="btn-pill-back" id="step2-back">‹ Atrás</button>
+          <button type="button" class="btn-pill-next" id="step2-next">Siguiente <span class="chev-right">›</span></button>
+        </div>
+      </div>
+
+      <!-- PASO 3: CONFIRMACIÓN -->
+      <div class="wizard-step" id="wizard-step-3" data-step="3" hidden>
+        <h2 class="wizard-title">Reportar Nuevo Caso – <br/>Paso 3: Confirmar y Enviar</h2>
+
+        <div class="review-card" id="review-card">
+          <!-- resumen inyectado por app.js -->
+        </div>
+
+        <p class="login-disclaimer">
+          Tu reporte será visible públicamente con su categoría, descripción y
+          foto. Tu correo no se muestra a otros usuarios.
+        </p>
+
+        <hr class="wizard-divider" />
+        <div class="wizard-actions wizard-actions-split">
+          <button type="button" class="btn-pill-back" id="step3-back">‹ Atrás</button>
+          <button type="submit" class="btn-pill-next" id="step3-submit">Enviar <span class="chev-right">›</span></button>
+        </div>
+      </div>
+
+    </form>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PANTALLA: PANEL DE ADMINISTRACIÓN -->
+  <!-- ============================================================ -->
+  <section id="screen-admin" class="screen">
+    <header class="wizard-header">
+      <button id="admin-back" class="icon-btn-flat" type="button" aria-label="Volver">‹</button>
+      <div class="wizard-progress-wrap">
+        <p class="wizard-step-label">Panel de Administración</p>
+      </div>
+    </header>
+
+    <div class="screen-scroll admin-scroll">
+      <div class="admin-filters">
+        <select id="admin-filter-category" class="admin-select">
+          <option value="">Todas las categorías</option>
+        </select>
+        <select id="admin-filter-status" class="admin-select">
+          <option value="">Todos los estados</option>
+          <option value="revision">En revisión</option>
+          <option value="proceso">En proceso</option>
+          <option value="solucionado">Solucionado</option>
+        </select>
+      </div>
+
+      <div id="admin-list" class="reports-list reports-list-detailed admin-list"></div>
+      <p id="admin-empty" class="empty-state" hidden>No hay reportes con estos filtros.</p>
+      <div class="scroll-spacer"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- MENÚ DE AJUSTES (modal simple) -->
+  <!-- ============================================================ -->
+  <div id="settings-sheet" class="sheet-overlay" hidden>
+    <div class="sheet">
+      <div class="sheet-user" id="sheet-user"></div>
+      <button id="sheet-admin-link" class="sheet-item" type="button" hidden>Panel de Administración</button>
+      <button id="sheet-logout" class="sheet-item sheet-item-danger" type="button">Cerrar sesión</button>
+      <button id="sheet-close" class="sheet-item sheet-item-muted" type="button">Cancelar</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
