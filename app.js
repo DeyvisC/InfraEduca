@@ -12,7 +12,7 @@ const API_BASE = "https://Batman07.pythonanywhere.com";
 
 // Debe ser EXACTAMENTE el mismo Client ID que GOOGLE_CLIENT_ID en el .env
 // del backend (server.py lo valida).
-const GOOGLE_CLIENT_ID = "16448425905-3pbedsv470s4pi8u1v2jk8vedbt2d5bc.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = "16440425985-3pbedsv470s4p18u1v2jkbvedbt2d5bc.apps.googleusercontent.com";
 
 const MAX_FILE_BYTES = 3 * 1024 * 1024; // 3 MB, igual que el backend
 
@@ -162,18 +162,24 @@ document.addEventListener("click", (e) => {
    ------------------------------------------------------------ */
 function initGoogleSignIn() {
   if (!window.google || !google.accounts || !google.accounts.id) {
-    // El script de Google no cargó (ej. sin internet o bloqueado).
-    $("#btn-google-fallback").hidden = false;
+    // Espera si la librería de Google aún está en camino
+    setTimeout(initGoogleSignIn, 100);
     return;
   }
+
   google.accounts.id.initialize({
     client_id: GOOGLE_CLIENT_ID,
     callback: handleGoogleCredential,
     auto_select: false,
   });
-  google.accounts.id.renderButton($("#google-signin-btn"), {
-    type: "standard", theme: "outline", size: "large", shape: "pill", width: 280,
-  });
+
+  // Usamos el método nativo directo para asegurarnos de que Google entienda el DOM
+  const botonContenedor = document.getElementById("google-signin-btn");
+  if (botonContenedor) {
+    google.accounts.id.renderButton(botonContenedor, {
+      type: "standard", theme: "outline", size: "large", shape: "pill", width: 280,
+    });
+  }
 }
 
 async function handleGoogleCredential(response) {
