@@ -12,7 +12,7 @@ const API_BASE = "https://Batman07.pythonanywhere.com";
 
 // Debe ser EXACTAMENTE el mismo Client ID que GOOGLE_CLIENT_ID en el .env
 // del backend (server.py lo valida).
-const GOOGLE_CLIENT_ID = "16440425985-3pbedsv470s4p18u1v2jkbvedbt2d5bc.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = "16448425905-3pbedsv470s4pi8u1v2jk8vedbt2d5bc.apps.googleusercontent.com";
 
 const MAX_FILE_BYTES = 3 * 1024 * 1024; // 3 MB, igual que el backend
 
